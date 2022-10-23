@@ -21,6 +21,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
     }
     @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
+        var alertController = UIAlertController(title: "Add new data", message: nil, preferredStyle: .alert)
+        present(alertController, animated: true)
         data.append("deneme")
         tableView.reloadData()
     }
