@@ -36,7 +36,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ListApp" id="lJH-8e-xiN"/>
+                    <navigationItem key="navigationItem" title="ListApp" id="lJH-8e-xiN">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="N7c-H4-sA5">
+                            <connections>
+                                <action selector="didAddBarButtonItemTapped:" destination="BYZ-38-t0r" id="yGR-Pi-R3I"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="erZ-vh-5W6" id="n18-SD-HZN"/>
                     </connections>

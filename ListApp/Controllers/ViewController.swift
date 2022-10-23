@@ -9,15 +9,19 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let data = ["a","b","c","d","e"]
+    var data = [String]()
 
     @IBOutlet weak var tableView: UITableView!
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
+        print("deneme")
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
