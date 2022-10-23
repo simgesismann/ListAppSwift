@@ -22,16 +22,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
         let alertController = UIAlertController(title: "Add new data", message: nil, preferredStyle: .alert)
-        
         let defaultButton = UIAlertAction(title: "ADD", style: .default) { _ in
             if alertController.textFields?.first?.text != ""{
                 self.data.append((alertController.textFields?.first?.text)!)
                 self.tableView.reloadData()
             }else{
-                let alertController = UIAlertController(title: "Warning", message: "Not Empty Data", preferredStyle: .alert)
-                let cancelButton = UIAlertAction(title: "OK", style: .cancel)
-                alertController.addAction(cancelButton)
-                self.present(alertController, animated: true)
+                self.presentWarningAlert()
             }
         }
         let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
@@ -41,7 +37,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         present(alertController, animated: true)
         
     }
-
+    func presentWarningAlert(){
+        presentAlert(title: "Warning", message: "Not Empty Data", cancelButtonTitle: "OK")
+    }
+    func presentAlert(title:String?, message:String?, preferredStyle:UIAlertController.Style = .alert, cancelButtonTitle:String?){
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+        let cancelButton = UIAlertAction(title: cancelButtonTitle, style: .cancel)
+        alertController.addAction(cancelButton)
+        self.present(alertController, animated: true)
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
         cell.textLabel?.text = data[indexPath.row]
