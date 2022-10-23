@@ -27,9 +27,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if alertController.textFields?.first?.text != ""{
                 self.data.append((alertController.textFields?.first?.text)!)
                 self.tableView.reloadData()
+            }else{
+                let alertController = UIAlertController(title: "Warning", message: "Not Empty Data", preferredStyle: .alert)
+                let cancelButton = UIAlertAction(title: "OK", style: .cancel)
+                alertController.addAction(cancelButton)
+                self.present(alertController, animated: true)
             }
         }
-        
         let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
         alertController.addTextField()
         alertController.addAction(defaultButton)
