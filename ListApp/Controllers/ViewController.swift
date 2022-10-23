@@ -60,7 +60,7 @@ class ViewController: UIViewController {
                      defaultButtonHandler: { UIAlertAction in
             let text = self.alertController.textFields?.first?.text
             if text != ""{
-                self.data.append((text)!)
+                //self.data.append((text)!)
                 self.tableView.reloadData()
             }else{
                 self.presentWarningAlert()
@@ -73,7 +73,8 @@ class ViewController: UIViewController {
 extension  ViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
-        cell.textLabel?.text = data[indexPath.row]
+        let listItem = data[indexPath.row]
+        cell.textLabel?.text = listItem.value(forKey: "title") as? String
         return cell
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,7 +96,7 @@ extension  ViewController: UITableViewDelegate, UITableViewDataSource{
                          defaultButtonHandler: { UIAlertAction in
                 let text = self.alertController.textFields?.first?.text
                 if text != ""{
-                    self.data[indexPath.row] = text!
+                    //self.data[indexPath.row] = text!
                     self.tableView.reloadData()
                 }else{
                     self.presentWarningAlert()
