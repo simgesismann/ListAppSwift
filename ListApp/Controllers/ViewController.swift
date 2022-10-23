@@ -96,8 +96,13 @@ extension  ViewController: UITableViewDelegate, UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .normal, title: "Delete") { _, _, _ in
-            self.data.remove(at: indexPath.row)
-            tableView.reloadData()
+            //self.data.remove(at: indexPath.row)
+            //tableView.reloadData()
+            let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            let managedObjectContext = appDelegate?.persistentContainer.viewContext
+            managedObjectContext?.delete(self.data[indexPath.row])
+            try? managedObjectContext?.save()
+            self.fetch()
         }
         deleteAction.backgroundColor = .systemRed
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, _ in
