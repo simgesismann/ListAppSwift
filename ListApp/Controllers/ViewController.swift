@@ -15,6 +15,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        let managedObjectContext = appDelegate?.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ListItem")
+        data = try! managedObjectContext!.fetch(fetchRequest)
     }
     @IBAction func didRemoveBarButtonItemTapped(_ sender:UIBarButtonItem){
         presentAlert(title: "Delete all items?", message: nil, preferredStyle: .alert, cancelButtonTitle: "CANCEL", defaultButtonTitle: "YES", isTextFieldAvailable: false) { UIAlertAction in
@@ -61,6 +65,14 @@ class ViewController: UIViewController {
             let text = self.alertController.textFields?.first?.text
             if text != ""{
                 //self.data.append((text)!)
+                let appDelegate = UIApplication.shared.delegate as? AppDelegate
+                let managedObjectContext = appDelegate?.persistentContainer.viewContext
+                let entity = NSEntityDescription.entity(forEntityName: "ListItem", in: managedObjectContext!)
+                let listItem = NSManagedObject(entity:entity!, insertInto: managedObjectContext)
+                listItem.setValue(text, forKey: "title")
+                try? managedObjectContext?.save()
+                let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ListItem")
+                self.data = try! managedObjectContext!.fetch(fetchRequest)
                 self.tableView.reloadData()
             }else{
                 self.presentWarningAlert()
