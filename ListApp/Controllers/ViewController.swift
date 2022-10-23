@@ -21,10 +21,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
     }
     @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
-        var alertController = UIAlertController(title: "Add new data", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add new data", message: nil, preferredStyle: .alert)
+        let defaultButton = UIAlertAction(title: "ADD", style: .default) { _ in
+            self.data.append("new data")
+            self.tableView.reloadData()
+        }
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(defaultButton)
+        alertController.addAction(cancelButton)
         present(alertController, animated: true)
-        data.append("deneme")
-        tableView.reloadData()
+        
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
