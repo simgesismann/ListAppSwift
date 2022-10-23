@@ -19,8 +19,9 @@ class ViewController: UIViewController {
     }
     @IBAction func didRemoveBarButtonItemTapped(_ sender:UIBarButtonItem){
         presentAlert(title: "Delete all items?", message: nil, preferredStyle: .alert, cancelButtonTitle: "CANCEL", defaultButtonTitle: "YES", isTextFieldAvailable: false) { UIAlertAction in
-            self.data.removeAll()
-            self.tableView.reloadData()
+            //self.data.removeAll()
+            //self.tableView.reloadData()
+            self.deleteData()
         }
     }
     @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
@@ -81,6 +82,20 @@ class ViewController: UIViewController {
         data = try! managedObjectContext!.fetch(fetchRequest)
         self.tableView.reloadData()
     }
+    func deleteData() {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        
+        let managedObjectContext = appDelegate?.persistentContainer.viewContext
+        
+        for item in self.data {
+            managedObjectContext?.delete(item)
+        }
+        
+        try? managedObjectContext?.save()
+        
+        self.fetch()
+        
+    }
     
 
 }
@@ -116,7 +131,15 @@ extension  ViewController: UITableViewDelegate, UITableViewDataSource{
                 let text = self.alertController.textFields?.first?.text
                 if text != ""{
                     //self.data[indexPath.row] = text!
-                    self.tableView.reloadData()
+                    let appDelegate = UIApplication.shared.delegate as? AppDelegate
+                    let managedObjectContext = appDelegate?.persistentContainer.viewContext
+                    self.data[indexPath.row].setValue(text, forKey: "title")
+                    if managedObjectContext!.hasChanges{
+                        try? managedObjectContext?.save()
+                        self.tableView.reloadData()
+                    }
+                    self.fetch()
+                    
                 }else{
                     self.presentWarningAlert()
                 }
