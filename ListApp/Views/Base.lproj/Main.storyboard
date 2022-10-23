@@ -37,6 +37,12 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" title="ListApp" id="lJH-8e-xiN">
+                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="HfW-0R-7Ds">
+                            <color key="tintColor" systemColor="systemRedColor"/>
+                            <connections>
+                                <action selector="didRemovBarButtonItemTapped:" destination="BYZ-38-t0r" id="u39-gI-T3T"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="N7c-H4-sA5">
                             <connections>
                                 <action selector="didAddBarButtonItemTapped:" destination="BYZ-38-t0r" id="yGR-Pi-R3I"/>
@@ -73,6 +79,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

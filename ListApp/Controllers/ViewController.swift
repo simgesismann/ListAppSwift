@@ -16,6 +16,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
     }
+    @IBAction func didRemovBarButtonItemTapped(_ sender:UIBarButtonItem){
+        presentAlert(title: "Delete all items?", message: nil, preferredStyle: .alert, cancelButtonTitle: "CANCEL", defaultButtonTitle: "YES", isTextFieldAvailable: false) { UIAlertAction in
+            self.data.removeAll()
+            self.tableView.reloadData()
+        }
+    }
     @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
         self.presentAddAlert()
     }
