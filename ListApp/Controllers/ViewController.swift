@@ -8,43 +8,58 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
     var data = [String]()
-
     @IBOutlet weak var tableView: UITableView!
-    
-    
-    
+    var alertController = UIAlertController()
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
     }
     @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
-        let alertController = UIAlertController(title: "Add new data", message: nil, preferredStyle: .alert)
-        let defaultButton = UIAlertAction(title: "ADD", style: .default) { _ in
-            if alertController.textFields?.first?.text != ""{
-                self.data.append((alertController.textFields?.first?.text)!)
-                self.tableView.reloadData()
-            }else{
-                self.presentWarningAlert()
-            }
+        self.presentAddAlert()
+    }
+    func presentAlert(title:String?,
+                      message:String?,
+                      preferredStyle:UIAlertController.Style = .alert,
+                      cancelButtonTitle:String?,
+                      defaultButtonTitle:String? = nil,
+                      isTextFieldAvailable:Bool = false,
+                      defaultButtonHandler:((UIAlertAction)->Void)? = nil){
+        alertController = UIAlertController(title: title,
+                                                message: message,
+                                                preferredStyle: preferredStyle)
+        let cancelButton = UIAlertAction(title: cancelButtonTitle,
+                                         style: .cancel)
+        if defaultButtonTitle != nil{
+            let defaultButton = UIAlertAction(title: defaultButtonTitle, style: .default, handler: defaultButtonHandler)
+            alertController.addAction(defaultButton)
         }
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
-        alertController.addTextField()
-        alertController.addAction(defaultButton)
+        if isTextFieldAvailable{
+            alertController.addTextField()
+        }
         alertController.addAction(cancelButton)
         present(alertController, animated: true)
-        
     }
     func presentWarningAlert(){
         presentAlert(title: "Warning", message: "Not Empty Data", cancelButtonTitle: "OK")
     }
-    func presentAlert(title:String?, message:String?, preferredStyle:UIAlertController.Style = .alert, cancelButtonTitle:String?){
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
-        let cancelButton = UIAlertAction(title: cancelButtonTitle, style: .cancel)
-        alertController.addAction(cancelButton)
-        self.present(alertController, animated: true)
+    func presentAddAlert(){
+        presentAlert(title: "Add new data",
+                     message: nil,
+                     preferredStyle: .alert,
+                     cancelButtonTitle: "Cancel",
+                     defaultButtonTitle: "ADD",
+                     isTextFieldAvailable: true,
+                     defaultButtonHandler: { UIAlertAction in
+            let text = self.alertController.textFields?.first?.text
+            if text != ""{
+                self.data.append((text)!)
+                self.tableView.reloadData()
+            }else{
+                self.presentWarningAlert()
+            }
+        })
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
