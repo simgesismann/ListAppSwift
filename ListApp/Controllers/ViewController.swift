@@ -21,7 +21,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
     }
     @IBAction func didAddBarButtonItemTapped(_ sender:UIBarButtonItem){
-        print("deneme")
+        data.append("deneme")
+        tableView.reloadData()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
