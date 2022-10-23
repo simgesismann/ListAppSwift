@@ -6,9 +6,9 @@
 //
 
 import UIKit
-
+import CoreData
 class ViewController: UIViewController {
-    var data = [String]()
+    var data = [NSManagedObject]()
     @IBOutlet weak var tableView: UITableView!
     var alertController = UIAlertController()
     override func viewDidLoad() {
