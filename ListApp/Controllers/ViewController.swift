@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController {
     var data = [String]()
     @IBOutlet weak var tableView: UITableView!
     var alertController = UIAlertController()
@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
     }
-    @IBAction func didRemovBarButtonItemTapped(_ sender:UIBarButtonItem){
+    @IBAction func didRemoveBarButtonItemTapped(_ sender:UIBarButtonItem){
         presentAlert(title: "Delete all items?", message: nil, preferredStyle: .alert, cancelButtonTitle: "CANCEL", defaultButtonTitle: "YES", isTextFieldAvailable: false) { UIAlertAction in
             self.data.removeAll()
             self.tableView.reloadData()
@@ -67,6 +67,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         })
     }
+    
+
+}
+extension  ViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
         cell.textLabel?.text = data[indexPath.row]
@@ -75,6 +79,32 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
-
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .normal, title: "Delete") { _, _, _ in
+            self.data.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
+        deleteAction.backgroundColor = .systemRed
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, _ in
+            self.presentAlert(title: "Edit data",
+                         message: nil,
+                         preferredStyle: .alert,
+                         cancelButtonTitle: "Cancel",
+                         defaultButtonTitle: "EDIT",
+                         isTextFieldAvailable: true,
+                         defaultButtonHandler: { UIAlertAction in
+                let text = self.alertController.textFields?.first?.text
+                if text != ""{
+                    self.data[indexPath.row] = text!
+                    self.tableView.reloadData()
+                }else{
+                    self.presentWarningAlert()
+                }
+            })
+        }
+        deleteAction.backgroundColor = .systemRed
+        editAction.backgroundColor = .systemCyan
+        let config = UISwipeActionsConfiguration(actions: [deleteAction,editAction])
+        return config
+    }
 }
-
